@@ -4,12 +4,12 @@ node {
          }
          
          stage('Install node modules'){
-                      bat "npm install"
+                      powershell 'npm install'
          }
          stage('Build'){
-                     bat "npm run ng -- build --prod"
+                     powershell 'npm run ng -- build --prod'
          }
          stage('Deploy'){
-                      bat "pm2 restart all"
+                      powershell 'pm2 restart all'
          }
      }
