@@ -12,7 +12,7 @@ node {
                      echo "build successful"
          }
          stage('Package Build') {
-        powershell 'tar -zcvf bundle.tar.gz dist/ng7/'
+        powershell '7z -zcvf bundle.tar.gz dist/ng7/'
     }
 
     stage('Artifacts Creation') {
