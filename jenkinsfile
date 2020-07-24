@@ -4,16 +4,12 @@ node {
          }
          
          stage('Install node modules'){
-                  nodeJS('nodeJS'){
                       powershell 'npm install'
                       echo "modules installed"
-                   }   
          }
          stage('Build'){
-                 nodeJS('nodeJS'){
                      powershell 'npm run ng -- build --prod'
                      echo "build successful"
-                 }    
          }
          stage('Package Build') {
         powershell 'tar -zcvf bundle.tar.gz dist/ng7/'
