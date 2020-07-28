@@ -3,7 +3,7 @@ pipeline {
       stages{
          stage ('Checkout SCM'){
               steps{
-                    git branch: 'master',url: 'https://github.com/prahask1996/angular7-sample.git'
+                    git 'master',url: 'https://github.com/prahask1996/angular7-sample.git'
           }
          }
          stage('Install node modules'){
@@ -12,8 +12,10 @@ pipeline {
                       echo "modules installed"
          }
          stage('Build'){
+              steps{
                      powershell 'npm run ng -- build --prod'
                      echo "build successful"
+            }
             }
       }
       
