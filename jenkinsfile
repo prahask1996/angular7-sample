@@ -11,19 +11,7 @@ node {
                      powershell 'npm run ng -- build --prod'
                      echo "build successful"
          }
-         stage('Package Build') {
-        powershell '7z -zcvf bundle.7z dist/ng7/'
-    }
-
-    stage('Artifacts Creation') {
-        fingerprint 'bundle.7z'
-        archiveArtifacts 'bundle.7z'
-        echo "Artifacts created"
-    }
-
-    stage('Stash changes') {
-        stash allowEmpty: true, includes: 'bundle.7z', name: 'buildArtifacts'
-    }
+       
          stage('Approval') {
             // no agent, so executors are not used up when waiting for approvals
             //agent none
@@ -38,6 +26,24 @@ node {
          //             powershell 'pm2 restart all'
         // }
      }
+     stage('Build images') {
+	      steps {
+		bat '''
+			  cd sm-shop
+			  docker build -f "Dockerfile" -t prahaskattimani/ng7:latest .
+		  
+		'''
+	      }
+       }
+   
+     stage('Push Docker image') {
+	  steps{
+		    withDockerRegistry([ credentialsId: "Docker_Hub", url: "" ]){
+			
+			bat "docker push prahaskattimani/ng7:latest"   
+	  	   }
+	   }
+       } 
 node('aws_node') {
     echo 'Unstash'
     unstash 'buildArtifacts'
