@@ -38,7 +38,7 @@ node {
    
      stage('Push Docker image') {
 	  steps{
-		    withDockerRegistry([ credentialsId: "Docker_Hub", url: "" ]){
+		    withDockerRegistry([ credentialsId: "DockerHub", url: "" ]){
 			
 			bat "docker push prahaskattimani/ng7:latest"   
 	  	   }
