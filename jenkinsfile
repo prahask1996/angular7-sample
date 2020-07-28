@@ -1,17 +1,22 @@
-node {
+pipeline {
+  agentany
+      stages{
          stage ('Checkout SCM'){
+              steps{
                     git branch: 'master',url: 'https://github.com/prahask1996/angular7-sample.git'
+          }
          }
-         
          stage('Install node modules'){
+            steps{
                       powershell 'npm install'
                       echo "modules installed"
          }
          stage('Build'){
                      powershell 'npm run ng -- build --prod'
                      echo "build successful"
-         }
-       
+            }
+      }
+      
          stage('Approval') {
             // no agent, so executors are not used up when waiting for approvals
             //agent none
@@ -44,6 +49,7 @@ node {
 	  	   }
 	   }
        } 
+    }
 node('aws_node') {
     echo 'Unstash'
     unstash 'buildArtifacts'
