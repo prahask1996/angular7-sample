@@ -6,13 +6,13 @@ pipeline {
                     git 'master',url: 'https://github.com/prahask1996/angular7-sample.git'
           }
          }
-         stage('Install node modules'){
-            steps{
+         stage ("Install node modules") {
+            steps {
                       powershell 'npm install'
                       echo "modules installed"
          }
-         stage('Build'){
-              steps{
+         stage("Build") {
+              steps {
                      powershell 'npm run ng -- build --prod'
                      echo "build successful"
             }
