@@ -9,5 +9,6 @@ COPY . .
 RUN npm install
 RUN npm run build --prod
 
-FROM nginx:alpine
-COPY --from=node /dist/ng7 /usr/share/ngnix/html
+FROM nginx:1.13.3-alpine
+RUN rm -rf /usr/share/nginx/html/*
+COPY dist/ng7 /usr/share/nginx/html
