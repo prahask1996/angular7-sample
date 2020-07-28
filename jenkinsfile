@@ -7,7 +7,7 @@ pipeline {
           }
          }
          stage ("Install node modules") {
-            steps {
+              steps {
                       powershell 'npm install'
                       echo "modules installed"
          }
@@ -33,24 +33,24 @@ pipeline {
          //             powershell 'pm2 restart all'
         // }
      }
-     stage('Build images') {
-	      steps {
-		bat '''
-			  cd sm-shop
-			  docker build -f "Dockerfile" -t prahaskattimani/ng7:latest .
+         stage('Build images') {
+	              steps {
+		                bat '''
+			                  cd sm-shop
+			                  docker build -f "Dockerfile" -t prahaskattimani/ng7:latest .
 		  
-		'''
-	      }
-       }
+		                '''
+	               }
+            }
    
-     stage('Push Docker image') {
-	  steps{
-		    withDockerRegistry([ credentialsId: "DockerHub", url: "" ]){
+           stage('Push Docker image') {
+	                 steps{
+		                      withDockerRegistry([ credentialsId: "DockerHub", url: "" ]){
 			
-			bat "docker push prahaskattimani/ng7:latest"   
-	  	   }
-	   }
-       } 
+			                    bat "docker push prahaskattimani/ng7:latest"   
+	  	                    }
+	                 }
+             } 
     }
 node('aws_node') {
     echo 'Unstash'
