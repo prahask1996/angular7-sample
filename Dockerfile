@@ -10,4 +10,4 @@ RUN npm install
 RUN npm run build --prod
 
 FROM nginx:alpine
-COPY /dist/ng7 /usr/share/nginx/html
+COPY --from=node /dist/ng7 /usr/share/ngnix/html
