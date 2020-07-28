@@ -3,7 +3,7 @@ pipeline {
       stages{
          stage ('Checkout SCM'){
               steps{
-                    git 'master',url: 'https://github.com/prahask1996/angular7-sample.git'
+                    git 'https://github.com/prahask1996/angular7-sample.git'
           }
          }
          stage ("Install node modules") {
