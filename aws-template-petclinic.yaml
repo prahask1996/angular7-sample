@@ -48,7 +48,7 @@ Resources:
           yum install docker
           service docker start
           usermod -a -G docker ec2-user
-          docker run -d --name=petclinic -p 8081:8080 prahaskattimani/ng7
+          docker run -d --name=petclinic -p 4200 prahaskattimani/ng7
 
   ELBSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -70,9 +70,9 @@ Resources:
         IpProtocol: tcp
         ToPort: 22
       - CidrIp: 0.0.0.0/0
-        FromPort: 8081
+        FromPort: 4200
         IpProtocol: tcp
-        ToPort: 8081
+        ToPort: 4200
 
   MyLoadBalancer:
     Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
@@ -99,15 +99,15 @@ Resources:
       HealthCheckIntervalSeconds: 30
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 3
-      Port: 8081
+      Port: 4200
       Protocol: HTTP
       UnhealthyThresholdCount: 5
       VpcId: !Ref ELBVPC
       Targets:
         - Id: !Ref MyInstance1
-          Port: 8081
+          Port: 4200
         - Id: !Ref MyInstance2
-          Port: 8081
+          Port: 4200
 
 Outputs:
   ELBDNSName:
