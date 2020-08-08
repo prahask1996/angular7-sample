@@ -56,9 +56,9 @@ Resources:
       GroupDescription: "ELB SG"
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
-          FromPort: 8081
+          FromPort: 4200
           IpProtocol: tcp
-          ToPort: 8081
+          ToPort: 4200
           
   ServerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
