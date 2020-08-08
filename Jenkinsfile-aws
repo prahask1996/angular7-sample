@@ -1,0 +1,13 @@
+pipeline{
+  agent any
+  stages{
+    stage('create AWS stack'){
+      steps {
+        echo "creating aws clowdFormation stack"
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'prahas_accessKeys', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+        sh 'aws cloudformation create-stack --stack-name petclinic --template-body file://aws-template-petclinic.yaml --region us-east-1 --parameters  ParameterKey=SSHKey,ParameterValue=qwerty ParameterKey=ELBVPC,ParameterValue=vpc-08a34775 ParameterKey=ELBSubnet,ParameterValue="subnet-6e3af308\\,subnet-78829e46"'
+        }
+      }
+    }
+  }
+}
