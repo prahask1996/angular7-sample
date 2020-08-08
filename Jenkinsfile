@@ -6,11 +6,6 @@ environment{
   }
  agent any
   stages {
-    stage('SCM') {
-      steps {
-         git 'https://github.com/prahask1996/angular7-sample.git'
-       }
-    }
    stage("Install node modules") {
      steps {
 	     powershell 'npm install'
