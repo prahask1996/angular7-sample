@@ -14,7 +14,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       SubnetId: !Select [0, !Ref ELBSubnet]
-      ImageId: ami-082cc6bbdc7dcb6f2
+      ImageId: ami-02354e95b39ca8dec
       InstanceType: t2.micro
       KeyName: !Ref SSHKey
       SecurityGroupIds:
@@ -23,16 +23,18 @@ Resources:
       UserData:
         Fn::Base64: |
           #!/bin/bash -xe
-          sudo yum update -y
-          sudo yum install java-1.8.0
-          sudo yum -y install httpd
-          sudo service httpd start
+          yum update -y
+          amazon-linux-extras install docker
+          yum install docker
+          service docker start
+          usermod -a -G docker ec2-user
+          docker run -d --name=petclinic -p 8081:8080 prahaskattimani/ng7
 
   MyInstance2:
     Type: AWS::EC2::Instance
     Properties:
       SubnetId: !Select [1, !Ref ELBSubnet]
-      ImageId: ami-082cc6bbdc7dcb6f2
+      ImageId: ami-02354e95b39ca8dec
       InstanceType: t2.micro
       KeyName: !Ref SSHKey
       SecurityGroupIds:
@@ -41,10 +43,12 @@ Resources:
       UserData:
         Fn::Base64: |
           #!/bin/bash -xe
-          sudo yum update -y
-          sudo yum install java-1.8.0
-          sudo yum -y install httpd
-          sudo service httpd start
+          yum update -y
+          amazon-linux-extras install docker
+          yum install docker
+          service docker start
+          usermod -a -G docker ec2-user
+          docker run -d --name=petclinic -p 8081:8080 prahaskattimani/ng7
 
   ELBSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -52,9 +56,9 @@ Resources:
       GroupDescription: "ELB SG"
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
-          FromPort: 80
+          FromPort: 8081
           IpProtocol: tcp
-          ToPort: 80
+          ToPort: 8081
           
   ServerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -66,9 +70,9 @@ Resources:
         IpProtocol: tcp
         ToPort: 22
       - CidrIp: 0.0.0.0/0
-        FromPort: 80
+        FromPort: 8081
         IpProtocol: tcp
-        ToPort: 80
+        ToPort: 8081
 
   MyLoadBalancer:
     Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
@@ -86,7 +90,7 @@ Resources:
         - Type: forward
           TargetGroupArn: !Ref MyLoadBalancerTargetGroup
       LoadBalancerArn: !Ref MyLoadBalancer
-      Port: 80
+      Port: 8081
       Protocol: HTTP
 
   MyLoadBalancerTargetGroup:
@@ -95,15 +99,15 @@ Resources:
       HealthCheckIntervalSeconds: 30
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 3
-      Port: 80
+      Port: 8081
       Protocol: HTTP
       UnhealthyThresholdCount: 5
       VpcId: !Ref ELBVPC
       Targets:
         - Id: !Ref MyInstance1
-          Port: 80
+          Port: 8081
         - Id: !Ref MyInstance2
-          Port: 80
+          Port: 8081
 
 Outputs:
   ELBDNSName:
