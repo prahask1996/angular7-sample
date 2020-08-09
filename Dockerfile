@@ -2,7 +2,7 @@
 FROM node:8.9.4
 
 # set working directory
-WORKDIR /
+WORKDIR /app
 
 
 # add `/node_modules/.bin` to $PATH
