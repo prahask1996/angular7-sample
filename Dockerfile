@@ -4,10 +4,9 @@ FROM node:8.9.4
 WORKDIR /app
 
 # install and cache app dependencies
-COPY package*.json ./
+COPY . .
 RUN npm install
 RUN npm run build --prod
-COPY . .
 EXPOSE 4200
 
 CMD ["npm", "start"]
