@@ -9,16 +9,16 @@ environment{
    stage("Install node modules") {
      steps {
        nodejs('nodejs') {
-	     powershell 'npm install'
-         echo "modules installed"
+	        sh 'npm install'
+          echo "modules installed"
         }
       }
    }
    stage("build") {
      steps {
        nodejs('nodejs') {
-			powershell 'npm run ng -- build --prod'
-            echo "build successful"
+			    sh 'npm run ng -- build --prod'
+          echo "build successful"
         }
       }
    }
