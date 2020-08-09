@@ -8,19 +8,20 @@ environment{
   stages {
    stage("Install node modules") {
      steps {
+       nodejs('nodejs') {
 	     powershell 'npm install'
          echo "modules installed"
-   }
+        }
+      }
    }
    stage("build") {
      steps {
+       nodejs('nodejs') {
 			powershell 'npm run ng -- build --prod'
             echo "build successful"
+        }
+      }
    }
-   }
-
-
-
    stage('Approval') {
             // no agent, so executors are not used up when waiting for approvals
             agent none
