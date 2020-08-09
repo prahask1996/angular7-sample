@@ -1,12 +1,11 @@
 FROM node:8.9.4
 
-# set working directory
+RUN mkdir -p /app
 WORKDIR /app
-
-# install and cache app dependencies
-COPY . .
+COPY package.json /app
 RUN npm install
+COPY . /app
 RUN npm run build --prod
-EXPOSE 4200
-
-CMD ["npm", "start"]
+# Stage 2
+FROM nginx:1.17.1-alpine
+COPY --from=build-step /app/docs /usr/share/nginx/html
