@@ -1,12 +1,8 @@
 FROM node:8.9.4-alpine AS builder
-
+RUN mkdir -p /app
 WORKDIR /app
-
-COPY . .
-
-RUN npm install && \
-    npm run build
-
-FROM nginx:alpine
-
-COPY --from=builder /app/dist/* /usr/share/nginx/html/
+COPY package.json /app/
+RUN ["npm", "install"]
+COPY . /app
+EXPOSE 4200/tcp
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--poll", "500"]
