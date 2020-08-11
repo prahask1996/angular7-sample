@@ -56,7 +56,7 @@ environment{
       steps{
         echo "deployeing to dev environment" 
         sh "docker rm -f ng7 || true"
-        sh "docker run -d --name=ng7 -p 8081:8080 prahaskattimani/ng7"
+        sh "docker run -d --name=ng7 -p 4200 prahaskattimani/ng7"
       }
     }       
   }
